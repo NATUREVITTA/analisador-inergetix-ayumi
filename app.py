@@ -10,7 +10,7 @@ try:
     API_KEY = st.secrets["GEMINI_API_KEY"]
     genai.configure(api_key=API_KEY)
     # Usando o modelo 1.5-flash que é mais estável e rápido
-    model = genai.GenerativeModel('gemini-3.1-flash-lite-preview')
+    model = genai.GenerativeModel('gemini-3.5-flash')
 except Exception as e:
     st.error("Erro na chave da API. Verifique o arquivo secrets.toml.")
 
@@ -18,9 +18,9 @@ except Exception as e:
 CAMINHO_LOGO = "logo.png" 
 ARQUIVO_HISTORICO = "historico_analises.txt"
 ENDERECO_FIXO = "Atendimento On-line"
-INSTA_FIXO = "@ikigaiNitatori"
-ZAP_FIXO = "41 99911 8273"
-NOME_TERAPEUTA_FIXO = "Ayumi Nitatori"
+INSTA_FIXO = "@soniacaettanoterapeuta"
+ZAP_FIXO = "47 99671 4602"
+NOME_TERAPEUTA_FIXO = "Sonia Caetano"
 
 # --- FUNÇÕES DE PERSISTÊNCIA ---
 def salvar_no_historico(nome_paciente):
@@ -63,7 +63,7 @@ class RelatorioPDF(FPDF):
         else:
             self.ln(10)
         self.set_font("Arial", "B", 14)
-        self.cell(0, 10, "Analise Integrativa por Biorressonancia Quantica Inergetix CoRe", ln=True, align='C')
+        self.cell(0, 10, "Analise Integrativa por Biorressonancia Quantica", ln=True, align='C')
         self.ln(5)
 
     def footer(self):
@@ -96,7 +96,7 @@ def gerar_pdf(texto_analise, dados_usuario, nome_terapeuta, info_rodape):
     pdf.set_font("Arial", "B", 11)
     pdf.cell(0, 8, txt=nome_terapeuta, ln=True, align='R')
     pdf.set_font("Arial", "I", 10)
-    pdf.cell(0, 8, txt="Consultora DoTerra", ln=True, align='R')
+    pdf.cell(0, 8, txt="Terapeuta", ln=True, align='R')
     
     return pdf.output(dest='S').encode('latin-1', 'replace')
 
@@ -131,7 +131,7 @@ with st.sidebar:
     tel = st.text_input("WhatsApp", ZAP_FIXO)
 
 # ÁREA PRINCIPAL
-st.title("🌿 Portal Consultora Ayumi Nitatori")
+st.title("🌿 Portal Terapeuta Sonia Caetano")
 
 col1, col2 = st.columns(2)
 with col1:
@@ -171,7 +171,7 @@ if gerar:
                 
                 prompt_final = f"""
 
-                Você é uma Consultora doTERRA, com vasta experiência prática em:
+                Você é uma Terapeuta e Consultora doTERRA, com vasta experiência prática em:
 
                     - Saúde física, emocional, energética e espiritual
                     - Saúde preventiva
@@ -251,19 +251,19 @@ if gerar:
                     - Práticas energéticas
                     - Sono
 
-                    ## 6) Minhas Considerações Finais
+                    ## 6) Gotas de Sabedoria
+                    Uma dica especial e inédita de aromaterapia para o dia.
+
+                    ## 7) Minhas Considerações Finais
                     Texto acolhedor e explicativo reforçando:
                     - A interpretação energética
                     - O papel ativo do paciente no processo
                     - O convite ao autocuidado consciente
 
-                    ## 7) Tempo de Uso e Reavaliação
+                    ## 8) Tempo de Uso e Reavaliação
                         ### Ciclo de 90 dias
                         Explique que este protocolo de óleos, suplementos e práticas deve ser seguido por no máximo 90 dias.
                         
-                    ## 8) Gotas de Sabedoria
-                    Uma dica especial e inédita de aromaterapia para o dia.
-
                     ## 9) Nota sobre Biorressonância e Autocura
                     Explique de forma simples:
                     - O que é biorressonância quântica (análise de tendências energéticas)
@@ -316,6 +316,6 @@ if "analise_atual" in st.session_state:
     st.download_button(
         label="📥 Baixar Relatório em PDF",
         data=st.session_state["pdf_bytes"],
-        file_name=f"Relatorio_CoRe_Id15015636_{nome_paciente.replace(' ', '_')}.pdf",
+        file_name=f"Relatorio_CoRe_{nome_paciente.replace(' ', '_')}.pdf",
         mime="application/pdf"
     )
